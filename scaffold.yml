@@ -1,0 +1,58 @@
+# yaml-language-server: $schema=https://hay-kot.github.io/scaffold/schema.json
+messages:
+  pre: |
+    # Go Web Template (Tiny)
+
+    A small scaffold template for setting up the common file structure for a web server
+    with:
+
+    - CLI and ENV Config
+    - Taskfile
+    - Graceful Shutdown
+    - Integration Testing Setup
+    - ...And more!
+
+  post: |
+    # Go Web Template (Tiny)
+
+    You can now run the following commands:
+
+    ```
+    cd {{ .ProjectKebab }}
+    task run -- --help
+    ```
+
+skip:
+  - "*.goreleaser.yaml"
+  - "*Taskfile.yml"
+
+questions:
+  - name: "gomod"
+    prompt:
+      message: "Go Module Path"
+  - name: "full_name"
+    prompt:
+      message: "Developer's full name"
+    required: true
+  - name: "description"
+    prompt:
+      message: "Description of the project"
+    required: true
+  - name: "open_source_license"
+    prompt:
+      message: "License of the project"
+      default: "MIT license"
+      options:
+        - "MIT license"
+        - "BSD license"
+        - "ISC license"
+        - "Apache Software License 2.0"
+        - "GNU General Public License v3"
+  - name: "ci_provider"
+    prompt:
+      message: "CI Provider"
+      default: "github"
+      options:
+        - "github"
+        - "drone.io"
+        - "none"
