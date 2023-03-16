@@ -11,12 +11,14 @@
 
 - [ ] Optional Database Support
   - [ ] Ent with Atlas Migrations
-  - [ ] User + Tenant Model
-  - [ ] Repository Pattern w/ DTOs
+    - [x] Ent Schema Folder with
+    - [x] User + Tenant Model
+    - [ ] Setup Client Connection on Start
+    - [ ] Sqlite (CGo) and Postgres Support
 - [ ] Optional Authentication Middleware
   - [ ] JWT + Refresh Tokens (Maybe DB Tokens)
 - [ ] Docker Support
   - [ ] Publish to Github Packages
   - [ ] Multi-arch Support (should be possible with goreleaser)
-- [ ] Struct Validation
+- [x] Struct Validation
 - [ ] Open API Docs

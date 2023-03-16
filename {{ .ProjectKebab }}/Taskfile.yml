@@ -12,12 +12,12 @@ tasks:
   run:
     desc: Runs the backend binary
     cmds:
-      - go run ./cmd/api/ {{ .CLI_ARGS }}
+      - go run ./cmd/api/ {{ wraptmpl ".CLI_ARGS" }}
 
   test:
     desc: Runs all go tests using gotestsum - supports passing gotestsum args
     cmds:
-      - gotestsum {{ .CLI_ARGS }} ./...
+      - gotestsum {{ wraptmpl ".CLI_ARGS" }} ./...
 
   watch:
     desc: Runs all go tests using gotestsum in watch mode
@@ -49,7 +49,36 @@ tasks:
   pr:
     desc: Runs all go test and lint related tasks for PRs
     cmds:
+      {{- if .Scaffold.use_database }}
+      - task: db:generate
+      {{- end }}
       - task: tidy
       - task: fmt
       - task: lint
       - task: test
+
+{{- if .Scaffold.use_database }}
+  db:generate:
+    desc: Generates Ent models
+    cmds:
+      - go generate ./...
+    sources:
+      - ./internal/data/ent/schema/**/*.go
+
+  db:migrator:
+    desc: Generates a new migration file
+    deps:
+      - db:generate
+    cmds:
+      - go generate ./...
+      - docker stop migrator || true
+      - docker run --name migrate --rm -p 55102:5432 -e POSTGRES_USER=user -e POSTGRES_PASSWORD=pass -e POSTGRES_DB=test -d postgres:13-alpine
+      - go run ./cmd/migrator/
+      - docker stop migrate
+
+  db:migrator:reset:
+    desc: Resets all generated migration files
+    cmds:
+      - rm -rf ./internal/data/migrations/sql/*
+      - echo "keep" > ./internal/data/migrations/sql/.gitkeep
+{{ end }}

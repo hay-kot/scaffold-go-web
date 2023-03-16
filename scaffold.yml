@@ -19,12 +19,16 @@ messages:
 
     ```
     cd {{ .ProjectKebab }}
+    {{- if .Scaffold.use_database }}
+    task tidy
+    task db:generate
+    {{ else }}
     task run -- --help
+    {{- end }}
     ```
 
 skip:
   - "*.goreleaser.yaml"
-  - "*Taskfile.yml"
 
 questions:
   - name: "gomod"
@@ -38,6 +42,9 @@ questions:
     prompt:
       message: "Description of the project"
     required: true
+  - name: "use_database"
+    prompt:
+      confirm: "Use Ent for ORM?"
   - name: "open_source_license"
     prompt:
       message: "License of the project"
