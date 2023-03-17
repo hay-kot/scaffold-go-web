@@ -20,7 +20,7 @@ func Write(temp string) error {
 		return err
 	}
 
-	fsDir, err := Files.ReadDir("migrations")
+	fsDir, err := Files.ReadDir("sql")
 	if err != nil {
 		return err
 	}
@@ -30,7 +30,7 @@ func Write(temp string) error {
 			continue
 		}
 
-		b, err := Files.ReadFile(filepath.Join("migrations", f.Name()))
+		b, err := Files.ReadFile(filepath.Join("sql", f.Name()))
 		if err != nil {
 			return err
 		}

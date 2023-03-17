@@ -14,8 +14,9 @@ require (
 	{{ if .Scaffold.use_database -}}
 	github.com/lib/pq v1.10.7
 	github.com/google/uuid v1.3.0
-	ariga.io/atlas v0.9.2-0.20230303073438-03a4779a6338
+	ariga.io/atlas v0.10.0
 	entgo.io/ent v0.11.10
+	github.com/mattn/go-sqlite3 v1.14.16
 	{{- end }}
 )
 

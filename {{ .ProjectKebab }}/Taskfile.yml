@@ -1,7 +1,8 @@
 version: "3"
 
 env:
-  LOG_LEVEL: "debug"
+  GITHUB_REPOSITORY: "{{ .Scaffold.github_username }}/{{ .ProjectKebab }}"
+  API_LOG_LEVEL: "debug"
 
 tasks:
   build:
@@ -9,8 +10,15 @@ tasks:
     cmds:
       - goreleaser build --snapshot --clean
 
+  release:local:
+    desc: Test release locally
+    cmds:
+      - goreleaser release --snapshot --clean --skip-publish
+
   run:
     desc: Runs the backend binary
+    env:
+      API_POSTGRES_SSL_MODE: "disable"
     cmds:
       - go run ./cmd/api/ {{ wraptmpl ".CLI_ARGS" }}
 
@@ -73,7 +81,7 @@ tasks:
       - go generate ./...
       - docker stop migrator || true
       - docker run --name migrate --rm -p 55102:5432 -e POSTGRES_USER=user -e POSTGRES_PASSWORD=pass -e POSTGRES_DB=test -d postgres:13-alpine
-      - go run ./cmd/migrator/
+      - go run ./cmd/tools/migrator/
       - docker stop migrate
 
   db:migrator:reset:
@@ -81,4 +89,17 @@ tasks:
     cmds:
       - rm -rf ./internal/data/migrations/sql/*
       - echo "keep" > ./internal/data/migrations/sql/.gitkeep
+
+  db:start:
+    desc: Starts a Postgres docker container
+    cmds:
+      - docker stop goapi-postgres || true
+      - |
+        docker run \
+          --name goapi-postgres \
+          -p 5432:5432 \
+          -e POSTGRES_USER=postgres \
+          -e POSTGRES_PASSWORD=postgres \
+          -e POSTGRES_DB=goapi \
+          postgres:13-alpine
 {{ end }}

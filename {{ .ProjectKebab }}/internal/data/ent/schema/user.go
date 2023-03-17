@@ -40,6 +40,9 @@ func (User) Fields() []ent.Field {
 			NotEmpty().
 			MaxLen(255). // supposed max length of an email address is 254 characters
 			Unique(),
+		field.String("password_hash").
+			NotEmpty().
+			MaxLen(512),
 	}
 }
 

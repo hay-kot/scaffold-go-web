@@ -21,7 +21,7 @@ messages:
     cd {{ .ProjectKebab }}
     {{- if .Scaffold.use_database }}
     task tidy
-    task db:generate
+    task db:migrator
     {{ else }}
     task run -- --help
     {{- end }}
@@ -37,6 +37,10 @@ questions:
   - name: "full_name"
     prompt:
       message: "Developer's full name"
+    required: true
+  - name: "github_username"
+    prompt:
+      message: "Developer's GitHub username"
     required: true
   - name: "description"
     prompt:

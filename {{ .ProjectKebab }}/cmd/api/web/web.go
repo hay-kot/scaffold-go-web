@@ -8,6 +8,13 @@ import (
 	"os"
 	"strings"
 
+	"{{ .Scaffold.gomod }}/cmd/api/web/controller"
+	{{ if .Scaffold.use_database }}
+	"{{ .Scaffold.gomod }}/internal/data/ent"
+	{{ end }}
+	"{{ .Scaffold.gomod }}/internal/web/mid"
+	"{{ .Scaffold.gomod }}/internal/sys/config"
+
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/cors"
@@ -16,8 +23,6 @@ import (
 	"github.com/hay-kot/safeserve/server"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
-	"{{ .Scaffold.gomod }}/cmd/api/web/controller"
-	"{{ .Scaffold.gomod }}/internal/web/mid"
 )
 
 // Web struct is a wrapper for the server and router that provides
@@ -27,13 +32,19 @@ import (
 type Web struct {
 	svr  *server.Server
 	mux  *chi.Mux
-	conf *Config
+	conf *config.Config
 	l    zerolog.Logger
+	{{- if .Scaffold.use_database }}
+	Client *ent.Client
+	{{ end -}}
 }
 
 type WebArgs struct {
-	Conf  *Config
+	Conf  *config.Config
 	Build string
+	{{- if .Scaffold.use_database }}
+	Client *ent.Client
+	{{ end -}}
 }
 
 func (web *WebArgs) Validate() error {
@@ -55,7 +66,7 @@ func New(args *WebArgs) *Web {
 
 	conf := args.Conf
 
-	if conf.Mode == ModeDevelopment {
+	if conf.Mode.IsDevelopment() {
 		log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
 	}
 
@@ -119,7 +130,7 @@ func (web *Web) errHandler(h errchain.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		err := h.ServeHTTP(w, r)
 		if err != nil {
-			if web.conf.Mode == ModeDevelopment {
+			if web.conf.Mode.IsDevelopment() {
 				fmt.Println(errtrace.TraceString(err))
 			}
 
