@@ -1,4 +1,3 @@
-{{- if .Scaffold.use_database -}}
 // Package schema defines the schema for the entities in the database.
 package schema
 
@@ -49,4 +48,3 @@ func (User) Fields() []ent.Field {
 func (User) Edges() []ent.Edge {
 	return []ent.Edge{}
 }
-{{- end -}}

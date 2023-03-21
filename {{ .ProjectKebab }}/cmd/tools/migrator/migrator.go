@@ -1,4 +1,3 @@
-{{- if .Scaffold.use_database -}}
 package main
 
 import (
@@ -51,4 +50,3 @@ func main() {
 
 	fmt.Println("Migration file generated successfully.")
 }
-{{- end -}}

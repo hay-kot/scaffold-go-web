@@ -1,4 +1,3 @@
-{{- if .Scaffold.use_database -}}
 package schema
 
 import (
@@ -35,4 +34,3 @@ func (Tenant) Edges() []ent.Edge {
 			Annotations(entsql.Annotation{OnDelete: entsql.Cascade}),
 	}
 }
-{{ end }}

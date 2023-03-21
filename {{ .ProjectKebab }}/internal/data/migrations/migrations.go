@@ -1,4 +1,3 @@
-{{- if .Scaffold.use_database -}}
 // Package migrations provides a way to embed migrations into the application.
 package migrations
 
@@ -43,4 +42,3 @@ func Write(temp string) error {
 
 	return nil
 }
-{{- end -}}

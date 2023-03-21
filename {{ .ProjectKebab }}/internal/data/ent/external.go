@@ -1,4 +1,3 @@
-{{ if .Scaffold.use_database }}
 package ent
 
 import (
@@ -12,4 +11,3 @@ import (
 func (c *Client) SQL() *sql.DB {
 	return c.driver.(*entsql.Driver).DB()
 }
-{{ end }}

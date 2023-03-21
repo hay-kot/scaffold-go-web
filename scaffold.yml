@@ -67,3 +67,9 @@ questions:
         - "github"
         - "drone.io"
         - "none"
+
+features:
+  - value: "{{ .Scaffold.use_database }}"
+    globs:
+      - "**/internal/data/**/*"
+      - "**/cmd/tools/migrator/**/*"

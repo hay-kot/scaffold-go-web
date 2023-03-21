@@ -78,7 +78,6 @@ tasks:
     deps:
       - db:generate
     cmds:
-      - go generate ./...
       - docker stop migrator || true
       - docker run --name migrate --rm -p 55102:5432 -e POSTGRES_USER=user -e POSTGRES_PASSWORD=pass -e POSTGRES_DB=test -d postgres:13-alpine
       - go run ./cmd/tools/migrator/

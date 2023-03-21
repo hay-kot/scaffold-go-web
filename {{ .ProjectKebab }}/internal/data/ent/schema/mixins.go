@@ -1,4 +1,3 @@
-{{- if .Scaffold.use_database -}}
 package schema
 
 import (
@@ -52,4 +51,3 @@ func (o TenantMixin) Edges() []ent.Edge {
 			Required(),
 	}
 }
-{{ end }}
