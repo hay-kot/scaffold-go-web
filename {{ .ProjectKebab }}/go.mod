@@ -1,6 +1,6 @@
 module {{ .Scaffold.gomod }}
 
-go 1.20
+go 1.22
 
 require (
 	github.com/ardanlabs/conf/v3 v3.1.5
